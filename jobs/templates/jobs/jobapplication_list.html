@@ -1,0 +1,39 @@
+{% extends 'base.html'%}
+{% block content %}
+<!-- <form action="{% url 'jobs:home' %}" method="get">
+    <input name="fltr" type="text">
+    <button>Filter</button>
+</form> -->
+<a class="filter {% if status == 'applied' %} {{status}} {% endif %}" href="{% url 'jobs:home'%}?fltr=applied">Applied</a>
+<a class="filter {% if status == 'accepted' %} {{status}} {% endif %}" href="{% url 'jobs:home'%}?fltr=accepted">Accepted</a>
+<a class="filter {% if status == 'rejected' %} {{status}} {% endif %}" href="{% url 'jobs:home'%}?fltr=rejected">Rejected</a>
+
+<form action="" method="get">
+    <input type="text" name="query" value="{{search_val}}">
+    <button>Seach</button>
+</form>
+
+<h1>Applications</h1>
+{% if not jobapplication_list %}
+<h3>No job applications yet. Create one.</h3>
+{%endif%}
+{% for job in jobapplication_list%}
+<div class="{{ job.status }} job_container">
+<h3>{{job.company}} : {{job.status}}</h3>
+<div class="links"><a href="{% url 'jobs:update_job' job.pk%}">Edit</a>
+<a href="{% url 'jobs:delete_job' job.pk%}">Delete</a>
+</div>
+</div>
+
+
+{% endfor %}
+<div class="paginator_links">
+    {% if page_obj.has_previous %}
+    <span><a href="?page={{page_obj.previous_page_number}}&fltr={{status}}&query={{search_val}}">Prev</a></span>
+    {% endif %}
+    <span>{{page_obj.number}} of {{page_obj.paginator.num_pages}}</span>
+    {% if page_obj.has_next %}
+    <span><a href="?page={{page_obj.next_page_number}}&fltr={{status}}&query={{search_val}}">Next</a></span>
+    {% endif %}
+</div>
+{% endblock %}

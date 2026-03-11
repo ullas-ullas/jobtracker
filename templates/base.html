@@ -1,0 +1,34 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Job Tracker</title>
+    <link rel="stylesheet" type="text/css" href="{% static 'jobs/styles.css' %}">
+</head>
+<body>
+    <nav>
+        <ul>
+        <li><a href="{% url 'jobs:dashboard'%}">Dashboard</a></li>
+        <li><a href="{% url 'jobs:home'%}">Jobs</a></li>
+        <li><a href="{% url 'jobs:create_job'%}">Create Job</a></li>
+        {% if user.is_authenticated %}
+        <li class="right">
+        <form method="post" action="{% url 'logout' %}">
+            {% csrf_token %}
+            <button type="submit">Logout</button>
+        </form>
+        </li>
+        {% else %}
+        <li class="right"><a href="{% url 'login'%}">Login</a></li>
+        {% endif %}
+        {% if not user.is_authenticated %}
+        <li class="rights"><a href="{% url 'jobs:register_user'%}">Register</a></li>
+        {% endif %}
+        </ul>
+    </nav>
+    {% block content %}
+    {% endblock %}
+</body>
+</html>
