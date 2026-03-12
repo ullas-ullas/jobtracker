@@ -12,10 +12,14 @@
     <input type="text" name="query" value="{{search_val}}">
     <button>Seach</button>
 </form>
-
+<br>
+<br>
+{% for message in messages %}
+<div class="message {{message.tags}}">{{message}}</div>
+{% endfor %}
 <h1>Applications</h1>
 {% if not jobapplication_list %}
-<h3>No job applications yet. Create one.</h3>
+<h3>You haven't added any job applications yet.</h3>
 {%endif%}
 {% for job in jobapplication_list%}
 <div class="{{ job.status }} job_container">

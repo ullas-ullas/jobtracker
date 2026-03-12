@@ -1,9 +1,9 @@
 {% extends 'base.html' %}
 {% block content%}
 <div class="data">
-<h3>Total {{total}}</h3>
-<h3>Applied {{applied}}</h3>
-<h3>Accepted {{accepted}}</h3>
-<h3>Rejected {{rejected}}</h3>
+<h3>Total ({{total}})</h3>
+{% if applied == 0 %}<h3>Applied (0)</h3>{% else %}<h3><a href="{% url 'jobs:home'%}?fltr=applied">Applied ({{applied}})</a></h3>{% endif %}
+{% if accepted == 0 %}<h3>Accepted (0)</h3>{% else %}<h3><a href="{% url 'jobs:home'%}?fltr=accepted">Accepted ({{accepted}})</a></h3>{% endif %}
+{% if rejected == 0 %}<h3>Rejected (0)</h3>{% else %}<h3><a href="{% url 'jobs:home'%}?fltr=rejected">Rejected ({{rejected}})</a></h3>{% endif %}
 </div>
 {% endblock %}

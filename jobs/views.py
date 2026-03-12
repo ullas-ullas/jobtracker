@@ -1,4 +1,4 @@
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from django.http import HttpResponse
 from django.views.generic import ListView, CreateView, UpdateView, DeleteView
 from .models import JobApplication
@@ -7,7 +7,7 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.auth.forms import UserCreationForm
 from django.urls import reverse_lazy
 from django.db.models import Q, Count
-
+from django.contrib import messages
 # Create your views here.
 
 def home(request):
@@ -60,6 +60,7 @@ class JobCreateView(LoginRequiredMixin, CreateView):
 
     def form_valid(self, form):
         form.instance.user = self.request.user
+        messages.success(self.request, "Job Added Successfully")
         return super().form_valid(form)
     
 class JobUpdateView(LoginRequiredMixin, UpdateView):
@@ -70,6 +71,10 @@ class JobUpdateView(LoginRequiredMixin, UpdateView):
     def get_queryset(self):
         return JobApplication.objects.filter(user = self.request.user)
     
+    def form_valid(self, form):
+        messages.success(self.request, "Updated Successfully")
+        return super().form_valid(form)
+    
 class JobDeleteView(LoginRequiredMixin, DeleteView):
     model = JobApplication
     template_name = "jobs/confirm_delete.html"
@@ -78,10 +83,19 @@ class JobDeleteView(LoginRequiredMixin, DeleteView):
     def get_queryset(self):
         return JobApplication.objects.filter(user = self.request.user)
     
+    def form_valid(self, form):
+        messages.success(self.request, "Jop application deleted Successfully")
+        return super().form_valid(form)
+
 class UserCreationView(CreateView):
     form_class = UserCreationForm
     success_url= reverse_lazy('login')
     template_name = 'registration/register.html'
+
+    def dispatch(self, request, *args, **kwargs):
+        if request.user.is_authenticated:
+            return redirect('jobs:home')
+        return super().dispatch(request, *args, **kwargs)
 
 class DashboardView(LoginRequiredMixin, ListView):
     model = JobApplication

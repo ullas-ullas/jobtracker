@@ -101,3 +101,9 @@ nav form button:hover {
     margin: 20px 0;
     text-align: center;
 }
+
+div.message.success {
+    display: flex;
+    justify-content: center;
+    color: rgb(29, 228, 29);
+}
