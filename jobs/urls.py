@@ -9,5 +9,6 @@ urlpatterns = [
     path("update/<int:pk>/" , views.JobUpdateView.as_view(), name="update_job"),
     path("delete/<int:pk>/", views.JobDeleteView.as_view(), name="delete_job"),
     path("register/", views.UserCreationView.as_view(), name="register_user"),
-    path("dashboard/", views.DashboardView.as_view(), name="dashboard")
+    path("dashboard/", views.DashboardView.as_view(), name="dashboard"),
+    path("export/", views.export_csv, name="export_csv"),
 ]
