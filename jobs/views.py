@@ -8,7 +8,10 @@ from django.contrib.auth.forms import UserCreationForm
 from django.urls import reverse_lazy
 from django.db.models import Q, Count
 from django.contrib import messages
-# Create your views here.
+import csv
+from django.http import HttpResponse
+from django.contrib.auth.decorators import login_required
+
 
 def home(request):
     return render(request, 'jobs.html')
@@ -113,3 +116,35 @@ class DashboardView(LoginRequiredMixin, ListView):
         context_data['applied'] = context_datas['applied']
 
         return context_data
+
+
+@login_required
+def export_csv(request):
+
+    response = HttpResponse(content_type='text/csv')
+    response['Content-Disposition'] = 'attachment; filename="job_applications.csv"'
+
+    writer = csv.writer(response)
+
+    writer.writerow([
+        "Company",
+        "Job Title",
+        "Location",
+        "Experience",
+        "Status",
+        "Applied Date",
+    ])
+
+    jobs = JobApplication.objects.filter(user=request.user)
+
+    for job in jobs:
+        writer.writerow([
+            job.company,
+            job.job_title,
+            job.location,
+            job.experience,
+            job.status,
+            job.applied_date,
+        ])
+
+    return response
