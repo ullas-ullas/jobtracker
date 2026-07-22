@@ -10,7 +10,7 @@ class JobApplication(models.Model):
         "Accepted": "Accepted",
         "Rejected" : "Rejected"
     }
-    job_title = models.CharField(max_length=100, blank=True, null=True)
+    job_title = models.CharField(max_length=100)
     company = models.CharField(max_length = 100)
     experience = models.IntegerField()
     location = models.CharField(max_length=100)
@@ -21,15 +21,24 @@ class JobApplication(models.Model):
 
     def clean(self):
         today = date.today()
-        if not self.pk:                 # wont run when updating existing application
-            if JobApplication.objects.filter(company = self.company.strip(), job_title = self.job_title.strip()).exists():
-                raise ValidationError("Duplicate job application on the same company and for the same role")
+
+        if self.company and self.job_title and self.user_id:
+            qs = JobApplication.objects.filter(
+                company__iexact=self.company.strip(),
+                job_title__iexact=self.job_title.strip(),
+                user=self.user,
+            )
+
+            if self.pk:
+                qs = qs.exclude(pk=self.pk)
+
+            if qs.exists():
+                raise ValidationError(
+                    "Duplicate job application on the same company and for the same role."
+                )
+
         if self.applied_date and self.applied_date > today:
-            raise ValidationError("Applied Date shouldn't be in the future")  
-        
-    def save(self, *args , **kwargs):
-        self.full_clean()
-        super().save(*args , **kwargs)
+            raise ValidationError("Applied Date shouldn't be in the future")
 
     def __str__(self):
         return f"{self.company}_{self.user.username}"

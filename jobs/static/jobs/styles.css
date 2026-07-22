@@ -1,109 +1,147 @@
-nav {
-    padding: 0 30px;
+body {
+  font-family: "Inter", sans-serif;
+  background-color: #f8f9fa;
 }
 
-nav li {
-    list-style: none;
-    margin-right: 15px;
-    
+.navbar-brand {
+  font-weight: 700;
 }
 
-nav li a {
-    color: inherit;
-    text-decoration: none;
+.alert {
+  border-radius: 10px;
 }
 
-nav ul {
-    display: flex;
-    align-items: center;
-    gap: 15px;
+/* ---------- Dashboard ---------- */
+
+.dashboard-page h2{
+    font-weight:700;
 }
 
-.right {
-    margin-left: auto;
+.dashboard-card{
+    border:none;
+    border-radius:16px;
+    box-shadow:0 5px 15px rgba(0,0,0,.08);
+    transition:0.25s;
 }
 
-nav form {
-    margin: 0;
+.dashboard-card:hover{
+    transform:translateY(-5px);
+    box-shadow:0 10px 25px rgba(0,0,0,.12);
 }
 
-nav form button {
-    background: none;
-    border: none;
-    padding: 0;
-    font: inherit;
-    color: inherit;
-    cursor: pointer;
+.dashboard-card h1{
+    font-size:3rem;
+    font-weight:700;
+    margin-bottom:0;
 }
 
-nav a:hover,
-nav form button:hover {
-    color: #007bff;   
+.dashboard-card h5{
+    font-weight:600;
 }
 
-.Accepted {
-    border: 5px green solid;
-    /* border-color: greenyellow; */
-    padding: 10px 10px;
+.dashboard-icon{
+    font-size:2.5rem;
 }
 
-.Rejected {
-    border: 5px rgb(224, 11, 64) solid;
-    /* border-color: greenyellow; */
-    padding: 20px 20px;
+.dashboard-link{
+    text-decoration:none;
+    color:inherit;
 }
 
-.Applied {
-    border: 5px gray solid;
-    /* border-color: greenyellow; */
-    padding: 20px 20px;
+.dashboard-link:hover{
+    color:inherit;
 }
 
-.job_container {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    margin-top: 10px;
+/* ---------- Create Job ---------- */
+
+.create-job-page{
+    margin-top:40px;
 }
 
-.job_container .links {
-    margin-left: auto;
-    
+.form-card{
+    border:none;
+    border-radius:16px;
+    box-shadow:0 5px 20px rgba(0,0,0,.08);
 }
 
-.job_container a{
-    color: #007bff;
-    margin-left: 30px;
+.form-card h2{
+    font-weight:700;
 }
 
-.filter {
-    text-decoration: none;
-    margin: 10px;
-    float: right;
+.form-card label{
+    font-weight:600;
+    margin-bottom:6px;
 }
 
-.filter:active {
-    color: rgb(38, 220, 38);
+.form-card input,
+.form-card select,
+.form-card textarea{
+    width:100%;
+    padding:10px 12px;
+    border:1px solid #ced4da;
+    border-radius:8px;
+    margin-bottom:15px;
 }
 
-.applied, .rejected, .accepted {
-    color: rgb(38, 220, 38);
+.form-card input:focus,
+.form-card select:focus,
+.form-card textarea:focus{
+    outline:none;
+    border-color:#0d6efd;
+    box-shadow:0 0 0 .2rem rgba(13,110,253,.15);
 }
 
-.data {
-    align-items: center;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
+/* ---------- Jobs Page ---------- */
+
+.jobs-page .job-card{
+    border:none;
+    border-radius:16px;
+    box-shadow:0 5px 15px rgba(0,0,0,.08);
+    transition:.25s;
 }
 
-.paginator_links {
-    margin: 20px 0;
-    text-align: center;
+.jobs-page .job-card:hover{
+    transform:translateY(-5px);
+    box-shadow:0 10px 25px rgba(0,0,0,.12);
 }
 
-div.message.success {
-    display: flex;
-    justify-content: center;
-    color: rgb(29, 228, 29);
+.jobs-page .card-footer{
+    padding:1rem;
+}
+
+.jobs-page .badge{
+    font-size:.85rem;
+}
+
+.jobs-page h5{
+    font-weight:600;
+}
+
+/* ---------- Login ---------- */
+
+.login-page{
+    margin-top:60px;
+}
+
+.login-card{
+    border:none;
+    border-radius:16px;
+    box-shadow:0 6px 20px rgba(0,0,0,.08);
+}
+
+.login-icon{
+    font-size:4rem;
+    color:#0d6efd;
+}
+
+.login-card label{
+    font-weight:600;
+    margin-bottom:6px;
+}
+
+.login-card input{
+    width:100%;
+    border-radius:8px;
+    padding:10px;
+    margin-bottom:15px;
 }

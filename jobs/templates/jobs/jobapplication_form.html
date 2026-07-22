@@ -1,8 +1,59 @@
 {% extends 'base.html' %}
-{% block content%}
-<form action="" method="post">
-    {% csrf_token %}
-    {{ form.as_p }}
-    <button type="submit">Submit</button>
-</form>
-{%endblock%}
+
+{% block title %}
+{% if form.instance.pk %}
+Edit Job
+{% else %}
+Add Job
+{% endif %}
+{% endblock %}
+
+{% block content %}
+
+<div class="create-job-page">
+
+    <div class="row justify-content-center">
+
+        <div class="col-md-8 col-lg-6">
+
+            <div class="card form-card">
+
+                <div class="card-body p-4">
+
+                    <h2 class="mb-4 text-center">
+                        {% if form.instance.pk %}
+                            Edit Job Application
+                        {% else %}
+                            Add Job Application
+                        {% endif %}
+                    </h2>
+
+                    <form method="post">
+
+                        {% csrf_token %}
+
+                        {{ form.as_p }}
+
+                        <div class="d-grid mt-4">
+                            <button class="btn btn-primary btn-lg" type="submit">
+                                {% if form.instance.pk %}
+                                    Update Job
+                                {% else %}
+                                    Save Job
+                                {% endif %}
+                            </button>
+                        </div>
+
+                    </form>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+{% endblock %}

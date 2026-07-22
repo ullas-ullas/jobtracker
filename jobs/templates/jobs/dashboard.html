@@ -1,9 +1,78 @@
-{% extends 'base.html' %}
-{% block content%}
-<div class="data">
-<h3>Total ({{total}})</h3>
-{% if applied == 0 %}<h3>Applied (0)</h3>{% else %}<h3><a href="{% url 'jobs:home'%}?fltr=applied">Applied ({{applied}})</a></h3>{% endif %}
-{% if accepted == 0 %}<h3>Accepted (0)</h3>{% else %}<h3><a href="{% url 'jobs:home'%}?fltr=accepted">Accepted ({{accepted}})</a></h3>{% endif %}
-{% if rejected == 0 %}<h3>Rejected (0)</h3>{% else %}<h3><a href="{% url 'jobs:home'%}?fltr=rejected">Rejected ({{rejected}})</a></h3>{% endif %}
+{% extends 'base.html' %} {% block title %}Dashboard{% endblock %} 
+{% block content %}
+
+<div class="dashboard-page">
+  <div class="mb-4">
+    <h2 class="fw-bold">Dashboard</h2>
+    <p class="text-muted">Overview of your job applications</p>
+  </div>
+
+  <div class="row g-4">
+    <!-- Total -->
+    <div class="col-md-6 col-lg-3">
+      <div class="card dashboard-card">
+        <div class="card-body text-center">
+          <i class="bi bi-briefcase-fill dashboard-icon text-primary"></i>
+          <h5 class="mt-3">Total Jobs</h5>
+          <h1>{{ total }}</h1>
+        </div>
+      </div>
+    </div>
+
+    <!-- Applied -->
+    <div class="col-md-6 col-lg-3">
+      <div class="card dashboard-card">
+        <div class="card-body text-center">
+          <i class="bi bi-send-fill dashboard-icon text-warning"></i>
+          <h5 class="mt-3">Applied</h5>
+
+          {% if applied %}
+          <a href="{% url 'jobs:home' %}?fltr=applied" class="dashboard-link">
+            <h1>{{ applied }}</h1>
+          </a>
+          {% else %}
+          <h1>0</h1>
+          {% endif %}
+        </div>
+      </div>
+    </div>
+
+    <!-- Accepted -->
+    <div class="col-md-6 col-lg-3">
+      <div class="card dashboard-card">
+        <div class="card-body text-center">
+          <i class="bi bi-check-circle-fill dashboard-icon text-success"></i>
+          <h5 class="mt-3">Accepted</h5>
+
+          {% if accepted %}
+          <a href="{% url 'jobs:home' %}?fltr=accepted" class="dashboard-link">
+            <h1>{{ accepted }}</h1>
+          </a>
+          {% else %}
+          <h1>0</h1>
+          {% endif %}
+        </div>
+      </div>
+    </div>
+
+    <!-- Rejected -->
+    <div class="col-md-6 col-lg-3">
+      <div class="card dashboard-card">
+        <div class="card-body text-center">
+          <i class="bi bi-x-circle-fill dashboard-icon text-danger"></i>
+          <h5 class="mt-3">Rejected</h5>
+
+          {% if rejected %}
+          <a href="{% url 'jobs:home' %}?fltr=rejected" class="dashboard-link">
+            <h1>{{ rejected }}</h1>
+          </a>
+          {% else %}
+          <h1>0</h1>
+          {% endif %}
+        </div>
+      </div>
+    </div>
+  </div>
 </div>
+
 {% endblock %}
