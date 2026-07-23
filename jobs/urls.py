@@ -11,4 +11,5 @@ urlpatterns = [
     path("register/", views.UserCreationView.as_view(), name="register_user"),
     path("dashboard/", views.DashboardView.as_view(), name="dashboard"),
     path("export/", views.export_csv, name="export_csv"),
+    path("search-jobs/", views.search_jobs_view,name="search_jobs"),
 ]

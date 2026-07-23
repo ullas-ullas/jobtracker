@@ -12,6 +12,7 @@ import csv
 from django.http import HttpResponse
 from django.contrib.auth.decorators import login_required
 from .forms import SignUpForm
+from .services import search_jobs
 
 
 def home(request):
@@ -52,9 +53,9 @@ class JobListView(LoginRequiredMixin, ListView):
         status = self.request.GET.get('fltr')
         if status:
             context['status'] = status
-        print("-------------------")
-        print(context)
-        print("-------------------")
+        # print("-------------------")
+        # print(context)
+        # print("-------------------")
         return context
     
 class JobCreateView(LoginRequiredMixin, CreateView):
@@ -149,3 +150,21 @@ def export_csv(request):
         ])
 
     return response
+
+def search_jobs_view(request):
+
+    keyword = request.GET.get("keyword", "").strip()
+
+    jobs = None
+
+    if keyword:
+        jobs = search_jobs(keyword)
+
+    return render(
+        request,
+        "jobs/search_jobs.html",
+        {
+            "jobs": jobs,
+            "keyword": keyword,
+        },
+    )
