@@ -11,6 +11,7 @@ from django.contrib import messages
 import csv
 from django.http import HttpResponse
 from django.contrib.auth.decorators import login_required
+from .forms import SignUpForm
 
 
 def home(request):
@@ -91,7 +92,7 @@ class JobDeleteView(LoginRequiredMixin, DeleteView):
         return super().form_valid(form)
 
 class UserCreationView(CreateView):
-    form_class = UserCreationForm
+    form_class = SignUpForm
     success_url= reverse_lazy('login')
     template_name = 'registration/register.html'
 

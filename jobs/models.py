@@ -2,6 +2,7 @@ from django.db import models
 from django.conf import settings
 from datetime import date, datetime
 from django.core.exceptions import ValidationError
+from datetime import timedelta
 # Create your models here.
 
 class JobApplication(models.Model):
@@ -18,6 +19,7 @@ class JobApplication(models.Model):
     applied_date = models.DateField()
     user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
     created_at = models.DateTimeField(auto_now_add=True)
+    follow_up_date = models.DateField(blank=True, null=True)
 
     def clean(self):
         today = date.today()
@@ -39,6 +41,13 @@ class JobApplication(models.Model):
 
         if self.applied_date and self.applied_date > today:
             raise ValidationError("Applied Date shouldn't be in the future")
+
+    def save(self, *args, **kwargs):
+
+        if self.applied_date:
+            self.follow_up_date = self.applied_date + timedelta(days=7)
+
+        super().save(*args, **kwargs)
 
     def __str__(self):
         return f"{self.company}_{self.user.username}"
