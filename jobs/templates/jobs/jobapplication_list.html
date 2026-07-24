@@ -78,7 +78,7 @@
 
         <div class="col-md-6 col-lg-4 mb-4">
 
-            <div class="card job-card h-100">
+            <div class="card job-card h-100" {% if job.job_url %}onclick="window.open('{{ job.job_url }}', '_blank')" style="cursor: pointer;"{% endif %}>
 
                 <div class="card-body">
 
@@ -97,22 +97,27 @@
                     </div>
 
                     <hr>
-
+                    
+                    {% if job.job_title %}
                     <p>
                         <strong>Role</strong><br>
                         {{ job.job_title }}
                     </p>
-
+                    {% endif %}
+                    
+                    {% if job.location %}
                     <p>
                         <strong>Location</strong><br>
                         {{ job.location }}
                     </p>
+                    {% endif %}
 
+                    {% if job.experience %}
                     <p>
                         <strong>Experience</strong><br>
                         {{ job.experience }} Years
                     </p>
-
+                    {% endif %}
                 </div>
 
                 <div class="card-footer bg-white border-0">

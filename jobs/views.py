@@ -10,8 +10,11 @@ from django.db.models import Q, Count
 from django.contrib import messages
 import csv
 from django.http import HttpResponse
-from django.contrib.auth.decorators import login_required
 from .forms import SignUpForm
+from .services import search_jobs
+from django.contrib.auth.decorators import login_required
+from django.views.decorators.http import require_POST
+
 
 
 def home(request):
@@ -52,9 +55,9 @@ class JobListView(LoginRequiredMixin, ListView):
         status = self.request.GET.get('fltr')
         if status:
             context['status'] = status
-        print("-------------------")
-        print(context)
-        print("-------------------")
+        # print("-------------------")
+        # print(context)
+        # print("-------------------")
         return context
     
 class JobCreateView(LoginRequiredMixin, CreateView):
@@ -149,3 +152,65 @@ def export_csv(request):
         ])
 
     return response
+
+def search_jobs_view(request):
+
+    keyword = request.GET.get("keyword", "").strip()
+
+    jobs = None
+
+    if keyword:
+        jobs = search_jobs(keyword)
+
+    return render(
+        request,
+        "jobs/search_jobs.html",
+        {
+            "jobs": jobs,
+            "keyword": keyword,
+        },
+    )
+
+
+
+@login_required
+@require_POST
+def track_job(request):
+
+    company = request.POST["company"]
+    title = request.POST["title"]
+
+    exists = JobApplication.objects.filter(
+        user=request.user,
+        company__iexact=company,
+        job_title__iexact=title,
+    ).exists()
+
+    if exists:
+        messages.warning(
+            request,
+            "You have already tracked this job."
+        )
+
+        return redirect(
+            f"/search-jobs/?keyword={request.POST.get('keyword','')}"
+        )
+
+    JobApplication.objects.create(
+        user=request.user,
+        company=company,
+        job_title=title,
+        location=request.POST.get("location", ""),
+        experience=None,
+        status="Wishlist",
+        job_url=request.POST.get("url", ""),
+    )
+
+    messages.success(
+        request,
+        "Job added to your dashboard!"
+    )
+
+    return redirect(
+        f"/search-jobs/?keyword={request.POST.get('keyword','')}"
+    )

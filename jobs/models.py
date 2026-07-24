@@ -6,20 +6,25 @@ from datetime import timedelta
 # Create your models here.
 
 class JobApplication(models.Model):
-    status_options = {
-        "Applied" : "Applied",
+    class Meta:
+        ordering = ["-created_at"]
+    STATUS_CHOICES = {
+        "Wishlist": "Wishlist",
+        "Applied": "Applied",
+        "Interview": "Interview",
         "Accepted": "Accepted",
-        "Rejected" : "Rejected"
+        "Rejected": "Rejected",
     }
     job_title = models.CharField(max_length=100)
     company = models.CharField(max_length = 100)
-    experience = models.IntegerField()
-    location = models.CharField(max_length=100)
-    status = models.CharField(choices=status_options, default="Applied")
-    applied_date = models.DateField()
+    experience = models.IntegerField(blank=True, null=True)
+    location = models.CharField(max_length=100, blank=True)
+    status = models.CharField(choices=STATUS_CHOICES, default="Wishlist")
+    applied_date = models.DateField(blank=True, null=True)
     user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
     created_at = models.DateTimeField(auto_now_add=True)
     follow_up_date = models.DateField(blank=True, null=True)
+    job_url = models.URLField(blank=True)
 
     def clean(self):
         today = date.today()
@@ -44,8 +49,10 @@ class JobApplication(models.Model):
 
     def save(self, *args, **kwargs):
 
-        if self.applied_date:
+        if self.status == "Applied" and self.applied_date:
             self.follow_up_date = self.applied_date + timedelta(days=7)
+        else:
+            self.follow_up_date = None
 
         super().save(*args, **kwargs)
 
