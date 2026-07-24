@@ -31,4 +31,16 @@ def search_jobs(keyword=None):
             or keyword in " ".join(job.get("tags", [])).lower()
         ]
 
-    return jobs
+    normalized_jobs = []
+
+    for job in jobs:
+        normalized_jobs.append({
+            "title": job.get("position"),
+            "company": job.get("company"),
+            "location": job.get("location"),
+            "url": job.get("url"),
+            "description": job.get("description"),
+            "tags": job.get("tags", []),
+        })
+
+    return normalized_jobs

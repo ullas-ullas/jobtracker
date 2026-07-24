@@ -25,6 +25,11 @@ class JobApplication(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
     follow_up_date = models.DateField(blank=True, null=True)
     job_url = models.URLField(blank=True)
+    description = models.TextField(blank=True)
+    ai_analysis = models.JSONField(
+        null=True,
+        blank=True,
+    )
 
     def clean(self):
         today = date.today()

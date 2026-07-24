@@ -1,6 +1,6 @@
 from django.shortcuts import render, redirect
 from django.http import HttpResponse
-from django.views.generic import ListView, CreateView, UpdateView, DeleteView
+from django.views.generic import ListView, CreateView, UpdateView, DeleteView, DetailView
 from .models import JobApplication
 from .forms import JobApplicationForm
 from django.contrib.auth.mixins import LoginRequiredMixin
@@ -11,9 +11,12 @@ from django.contrib import messages
 import csv
 from django.http import HttpResponse
 from .forms import SignUpForm
-from .services import search_jobs
+from .services.api_service import search_jobs
 from django.contrib.auth.decorators import login_required
 from django.views.decorators.http import require_POST
+from django.shortcuts import get_object_or_404
+from .services.ai_analysis import analyze_job_service
+from collections import Counter
 
 
 
@@ -59,6 +62,13 @@ class JobListView(LoginRequiredMixin, ListView):
         # print(context)
         # print("-------------------")
         return context
+
+class JobDetailView(LoginRequiredMixin, DetailView):
+    model = JobApplication
+    template_name = "jobs/job_detail.html"
+
+    def get_queryset(self):
+        return JobApplication.objects.filter(user=self.request.user)
     
 class JobCreateView(LoginRequiredMixin, CreateView):
     model = JobApplication
@@ -113,7 +123,7 @@ class DashboardView(LoginRequiredMixin, ListView):
         context_datas = JobApplication.objects.aggregate(total = Count("id", filter = Q(user = self.request.user)),
                                                          accepted = Count("id", filter=Q(user = self.request.user, status = "Accepted")),
                                                          rejected = Count("id", filter=Q(user = self.request.user, status = "Rejected")),
-                                                         applied = Count("id", filter=Q(user = self.request.user) & ~Q(status = "Accepted") & ~Q(status="Rejected")))
+                                                         applied = Count("id", filter=Q(user = self.request.user, status = "Applied")))
         context_data['total'] = context_datas['total']
         context_data['accepted'] = context_datas['accepted']
         context_data['rejected'] = context_datas['rejected']
@@ -179,6 +189,7 @@ def track_job(request):
 
     company = request.POST["company"]
     title = request.POST["title"]
+    description = request.POST.get("description", "")
 
     exists = JobApplication.objects.filter(
         user=request.user,
@@ -204,6 +215,7 @@ def track_job(request):
         experience=None,
         status="Wishlist",
         job_url=request.POST.get("url", ""),
+        description=description,
     )
 
     messages.success(
@@ -213,4 +225,43 @@ def track_job(request):
 
     return redirect(
         f"/search-jobs/?keyword={request.POST.get('keyword','')}"
+    )
+
+@login_required
+def analyze_job(request, pk):
+    job = get_object_or_404(
+        JobApplication,
+        pk=pk,
+        user=request.user
+    )
+
+    if job.ai_analysis:
+        return render(
+            request,
+            "jobs/job_analysis.html",
+            {
+                "job": job,
+                "analysis": job.ai_analysis,
+            },
+        )
+
+    try:
+        analysis = analyze_job_service(
+            title=job.job_title,
+            company=job.company,
+            description=job.description,
+        )
+        job.ai_analysis = analysis
+        job.save(update_fields=["ai_analysis"])
+    except Exception as e:
+        messages.error(request, str(e))
+        return redirect("jobs:job_detail", pk=job.pk)
+
+    return render(
+        request,
+        "jobs/job_analysis.html",
+        {
+            "job": job,
+            "analysis": analysis,
+        },
     )

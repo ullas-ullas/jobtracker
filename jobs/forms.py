@@ -13,7 +13,7 @@ from .models import JobApplication
 class JobApplicationForm(ModelForm):
     class Meta:
         model = JobApplication
-        exclude = ['user', 'follow_up_date']
+        exclude = ['user', 'follow_up_date', 'ai_analysis' , 'description']
 
         widgets = {
             'applied_date': forms.DateInput(

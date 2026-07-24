@@ -1,0 +1,170 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<div class="container mt-5">
+
+    <div class="card shadow-sm mb-4">
+
+    <div class="card-body">
+
+        <h2 class="mb-2">{{ job.job_title }}</h2>
+
+        <h5 class="text-muted">
+            {{ job.company }}
+        </h5>
+
+        <p class="text-muted mb-3">
+            📍 {{ job.location }}
+        </p>
+
+        {% if analysis.difficulty == "Beginner" %}
+            <span class="badge bg-success fs-6">
+                Beginner
+            </span>
+
+        {% elif analysis.difficulty == "Intermediate" %}
+            <span class="badge bg-warning text-dark fs-6">
+                Intermediate
+            </span>
+
+        {% else %}
+            <span class="badge bg-danger fs-6">
+                Advanced
+            </span>
+        {% endif %}
+
+        <a
+            href="{{ job.job_url }}"
+            target="_blank"
+            class="btn btn-outline-primary float-end">
+
+            Open Original Job
+
+        </a>
+
+    </div>
+
+</div>
+
+<div class="card shadow-sm mb-4">
+
+    <div class="card-header">
+
+        📝 Summary
+
+    </div>
+
+    <div class="card-body">
+
+        {{ analysis.summary }}
+
+    </div>
+
+</div>
+
+<div class="card shadow-sm mb-4">
+
+    <div class="card-header">
+
+        🛠 Required Skills
+
+    </div>
+
+    <div class="card-body">
+
+        {% for skill in analysis.skills %}
+
+            <span class="badge bg-primary me-2 mb-2 p-2">
+
+                {{ skill }}
+
+            </span>
+
+        {% endfor %}
+
+    </div>
+
+</div>
+
+<div class="card shadow-sm mb-4">
+
+    <div class="card-header">
+
+        ❓ Interview Questions
+
+    </div>
+
+    <div class="card-body">
+
+        <ol class="mb-0">
+
+            {% for question in analysis.interview_questions %}
+
+                <li class="mb-3">
+
+                    {{ question }}
+
+                </li>
+
+            {% endfor %}
+
+        </ol>
+
+    </div>
+
+</div>
+
+<div class="card shadow-sm">
+
+    <div class="card-header">
+
+        💡 Preparation Tips
+
+    </div>
+
+    <div class="card-body">
+
+        <ul class="mb-0">
+
+            {% for tip in analysis.preparation_tips %}
+
+                <li class="mb-3">
+
+                    {{ tip }}
+
+                </li>
+
+            {% endfor %}
+
+        </ul>
+
+    </div>
+
+</div>
+
+
+
+    <!-- Hero Card -->
+
+    ...
+
+    <!-- Summary Card -->
+
+    ...
+
+    <!-- Skills Card -->
+
+    ...
+
+    <!-- Interview Questions Card -->
+
+    ...
+
+    <!-- Preparation Tips Card -->
+
+    ...
+
+</div>
+
+{% endblock %}

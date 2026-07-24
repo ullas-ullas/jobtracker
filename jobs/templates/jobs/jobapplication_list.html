@@ -78,7 +78,7 @@
 
         <div class="col-md-6 col-lg-4 mb-4">
 
-            <div class="card job-card h-100" {% if job.job_url %}onclick="window.open('{{ job.job_url }}', '_blank')" style="cursor: pointer;"{% endif %}>
+            <div class="card job-card h-100" {% if True %}onclick="window.location='{% url 'jobs:job_detail' job.pk %}'" style="cursor: pointer;"{% endif %}>
 
                 <div class="card-body">
 
@@ -90,6 +90,8 @@
                             <span class="badge bg-warning text-dark">{{ job.status }}</span>
                         {% elif job.status == "Accepted" %}
                             <span class="badge bg-success">{{ job.status }}</span>
+                        {% elif job.status == "Wishlist" %}
+                            <span class="badge bg-info">{{ job.status }}</span>
                         {% else %}
                             <span class="badge bg-danger">{{ job.status }}</span>
                         {% endif %}
