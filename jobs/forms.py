@@ -31,6 +31,10 @@ class JobApplicationForm(ModelForm):
         if not self.instance.pk:
             self.fields['applied_date'].initial = timezone.now().date()
 
+        if self.instance.status == "Wishlist":
+            self.fields.pop("applied_date")
+            self.fields.pop("experience")
+
 
 class SignUpForm(UserCreationForm):
     email = forms.EmailField(required=True)

@@ -12,4 +12,5 @@ urlpatterns = [
     path("dashboard/", views.DashboardView.as_view(), name="dashboard"),
     path("export/", views.export_csv, name="export_csv"),
     path("search-jobs/", views.search_jobs_view,name="search_jobs"),
+    path("track-job/", views.track_job, name="track_job"),
 ]
