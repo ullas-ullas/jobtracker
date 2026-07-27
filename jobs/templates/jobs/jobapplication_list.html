@@ -125,12 +125,12 @@
                 <div class="card-footer bg-white border-0">
 
                     <a href="{% url 'jobs:update_job' job.pk %}"
-                       class="btn btn-outline-primary btn-sm">
+                       class="btn btn-outline-primary btn-sm" onclick="event.stopPropagation();">
                         Edit
                     </a>
 
                     <a href="{% url 'jobs:delete_job' job.pk %}"
-                       class="btn btn-outline-danger btn-sm">
+                       class="btn btn-outline-danger btn-sm" onclick="event.stopPropagation();">
                         Delete
                     </a>
 
