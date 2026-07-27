@@ -13,6 +13,6 @@ COPY . .
 
 EXPOSE 8000
 
-RUN chmod u+x entry.sh
+RUN chmod +x entry.sh
 
 CMD ["./entry.sh"]
