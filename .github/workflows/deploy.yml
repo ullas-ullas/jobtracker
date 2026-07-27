@@ -23,7 +23,8 @@ jobs:
           script: |
             cd ~/jobtracker
             git pull origin main
-            docker compose up -d --build
+            docker compose build --no-cache
+            docker compose up
             echo "Waiting for Django..."
             sleep 20
             docker compose ps
