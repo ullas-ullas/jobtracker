@@ -21,6 +21,12 @@ services:
 
     restart: unless-stopped
 
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8000/"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
 
   nginx:
     image: nginx:alpine
@@ -34,7 +40,7 @@ services:
 
     depends_on:
       web:
-        condition: service_started
+        condition: service_healthy
 
   celery:
     build: .
