@@ -27,7 +27,7 @@ class JobListView(LoginRequiredMixin, ListView):
     
     model = JobApplication
     # template_name = "templates/jobapplication_list.html"
-    paginate_by = 3
+    paginate_by = 6
     
     def get_queryset(self):
         query_ = self.request.GET.get("query")
