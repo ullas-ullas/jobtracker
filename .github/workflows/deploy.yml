@@ -24,3 +24,5 @@ jobs:
             cd ~/jobtracker
             git pull origin main
             docker compose up -d --build
+            docker compose ps
+            docker compose logs web --tail=50
