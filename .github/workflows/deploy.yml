@@ -23,7 +23,7 @@ jobs:
           script: |
             cd ~/jobtracker
             git pull origin main
-            docker compose up --build
+            docker compose up -d --build
             docker compose restart nginx
             echo "Waiting for Django..."
             docker compose ps
