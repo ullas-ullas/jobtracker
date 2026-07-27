@@ -24,5 +24,7 @@ jobs:
             cd ~/jobtracker
             git pull origin main
             docker compose up -d --build
+            echo "Waiting for Django..."
+            sleep 20
             docker compose ps
             docker compose logs web --tail=50
