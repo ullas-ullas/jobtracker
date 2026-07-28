@@ -1,12 +1,10 @@
-from google import genai
+from openai import OpenAI
 from django.conf import settings
 import json
 from google.genai.errors import ServerError
 
 
-client = genai.Client(
-    api_key=settings.GEMINI_API_KEY
-)
+client = OpenAI(api_key=settings.OPENAI_API_KEY)
 
 
 def analyze_job_service(
@@ -51,18 +49,23 @@ def analyze_job_service(
     """
 
     try:
-        response = client.models.generate_content(
-            model="gemini-3.5-flash",
-            contents=prompt,
+        response = client.chat.completions.create(
+            model="gpt-5-mini",
+            messages=[
+                {
+                    "role": "system",
+                    "content": "You are a software engineering career coach. Always respond with valid JSON only."
+                },
+                {
+                    "role": "user",
+                    "content": prompt
+                }
+            ],
+            response_format={"type": "json_object"},
         )
 
-        text = response.text.strip()
+        return json.loads(response.choices[0].message.content)
 
-        if text.startswith("```json"):
-            text = text.removeprefix("```json").removesuffix("```").strip()
-
-        data =  json.loads(text)
-        return data
     except Exception as e:
         raise Exception(
             "The AI service is temporarily busy. Please try again in a few minutes."
