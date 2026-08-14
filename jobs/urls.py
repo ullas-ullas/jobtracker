@@ -4,7 +4,8 @@ from . import views
 app_name = "jobs"
 
 urlpatterns = [
-    path("", views.JobListView.as_view(), name="home"),
+    path("", views.LandingView.as_view(), name="landing"),
+    path("jobs/", views.JobListView.as_view(), name="home"),
     path("job/<int:pk>/",views.JobDetailView.as_view(),name="job_detail"),
     path("create/", views.JobCreateView.as_view(), name="create_job"),
     path("update/<int:pk>/" , views.JobUpdateView.as_view(), name="update_job"),

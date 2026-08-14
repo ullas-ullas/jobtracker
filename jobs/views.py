@@ -1,6 +1,6 @@
 from django.shortcuts import render, redirect
 from django.http import HttpResponse
-from django.views.generic import ListView, CreateView, UpdateView, DeleteView, DetailView
+from django.views.generic import ListView, CreateView, UpdateView, DeleteView, DetailView,TemplateView
 from .models import JobApplication
 from .forms import JobApplicationForm
 from django.contrib.auth.mixins import LoginRequiredMixin
@@ -265,3 +265,6 @@ def analyze_job(request, pk):
             "analysis": analysis,
         },
     )
+
+class LandingView(TemplateView):
+    template_name = "landing.html"
